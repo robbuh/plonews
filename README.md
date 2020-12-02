@@ -42,16 +42,16 @@ $ ./sh/plone-fg.sh
 **Install addons in src folder**
 
 ```console
-$ ./sh/plone-develop.sh
-```
-
-**Add custom addons in src via buildout**
-
-```console
 $ mkdir src
 $ cd src
 $ git clone https://github.com/user/my.product
 ```
+
+```console
+$ ./sh/plone-develop.sh
+```
+
+**Add custom addons in src via buildout**
 
 ```console
 $ ./sh/plone-create.sh

@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+docker run --rm \
+       --name plone-dev --net=backend -p 8080:8080 \
+       -e PLONE_ADDONS="collective.easyform" \
+       plonews:5.2.2-python37 \
+       bin/test -v -vv -s collective.easyform

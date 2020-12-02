@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+# Copy buildout file
+BUILDOUT=('site.cfg' 'develop.cfg' 'sources.cfg')
+echo "Start copy buildout files in local enviroment..."
+echo "Creation of plonecopy container..."
+docker create --name  plonecopy plonews:5.2.2-python37
+for file in "${BUILDOUT[@]}"
+  do
+    if [ ! -f $(pwd)/$file ]; then
+      docker cp plonecopy:/plone/instance/$file $(pwd)/.
+      echo "$file copied in $(pwd)"
+    else
+      echo "$file already in root directory."
+    fi
+  done
+echo "All files in local enviroment."
+docker rm plonecopy
+echo "plonecopy container has been delete."
+
+if [ "$(docker ps -q -f name=plone-dev)" ]; then
+  docker stop plone-dev
+  echo "A running plone-dev has been stoped."
+fi
+
+echo "plone-dev container creation"
+docker create --rm \
+       --name plone-dev --net=backend -p 8080:8080 \
+       -v $(pwd)/data/:/data/ \
+       -v $(pwd)/src/:/plone/instance/src/ \
+       -v $(pwd)/site.cfg:/plone/instance/site.cfg \
+       plonews:5.2.2-python37
+
+docker start plone-dev
+echo "plone-dev container has started and is ready to handle requests."

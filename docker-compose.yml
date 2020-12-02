@@ -25,6 +25,9 @@ services:
       ZEO_ADDRESS: "zeoserver:8080"
       #MEMCACHE_SERVER: "memcached:11211"
       TZ: "Europe/Berlin"
+    #command: ['fg']
+    volumes:
+      - ./src/:/plone/instance/src/
     networks:
       - backend
 
@@ -34,7 +37,6 @@ services:
     command: zeo
     volumes:
       - ./data/:/data/
-      #- ./src/:/plone/instance/src/
     environment:
       TZ: "Europe/Berlin"
     networks:
